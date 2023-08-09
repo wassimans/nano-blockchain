@@ -3,6 +3,7 @@ import * as randomstring from "randomstring";
 
 class Block {
   readonly hash: string;
+  readonly nonce: number;
 
   constructor(
     readonly index: number,
@@ -10,14 +11,27 @@ class Block {
     readonly timestamp: number,
     readonly data: string
   ) {
-    this.hash = this.calculateHash();
+    const { nonce, hash } = this.mine();
+    this.hash = hash;
+    this.nonce = nonce;
   }
 
-  private calculateHash(): string {
+  private calculateHash(nonce: number): string {
     const data: string =
-      this.index + this.previousHash + this.timestamp + this.data;
+      this.index + this.previousHash + this.timestamp + this.data + nonce;
 
     return crypto.createHash("sha256").update(data).digest("hex");
+  }
+
+  private mine(): { nonce: number; hash: string } {
+    let hash: string;
+    let nonce = 0;
+
+    do {
+      hash = this.calculateHash(++nonce);
+    } while (hash.startsWith("00000") === false);
+
+    return { nonce, hash };
   }
 }
 
@@ -61,4 +75,4 @@ setInterval(() => {
   console.log(`Mined new block #${blockchain.latestBlock.index + 1}`);
   blockchain.addBlock();
   console.log(JSON.stringify(blockchain.latestBlock, null, 2));
-}, 3000);
+}, 30);
