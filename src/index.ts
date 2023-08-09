@@ -24,6 +24,10 @@ class Block {
 class Blockchain {
   private readonly blocks: Array<Block> = [];
 
+  get genesis(): Block {
+    return this.blocks[0];
+  }
+
   get latestBlock(): Block {
     return this.blocks[this.blocks.length - 1];
   }
@@ -50,6 +54,8 @@ class Blockchain {
 
 console.log("Creating the blockchain with the genesis block...");
 const blockchain = new Blockchain();
+
+console.log(JSON.stringify(blockchain.genesis, null, 2));
 
 setInterval(() => {
   console.log(`Mined new block #${blockchain.latestBlock.index + 1}`);
