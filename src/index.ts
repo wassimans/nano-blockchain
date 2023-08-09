@@ -1,4 +1,5 @@
 import * as crypto from "crypto";
+import * as randomstring from "randomstring";
 
 class Block {
   readonly hash: string;
@@ -23,7 +24,7 @@ class Block {
 class Blockchain {
   private readonly blocks: Array<Block> = [];
 
-  private get latestBlock(): Block {
+  get latestBlock(): Block {
     return this.blocks[this.blocks.length - 1];
   }
 
@@ -33,12 +34,15 @@ class Blockchain {
     this.blocks.push(genesis);
   }
 
-  addBlock(data: string) {
+  addBlock() {
     const newBlock = new Block(
       this.latestBlock.index + 1,
       this.latestBlock.hash,
       Date.now(),
-      data
+      randomstring.generate({
+        length: 64,
+        charset: "hex",
+      })
     );
     this.blocks.push(newBlock);
   }
@@ -46,8 +50,9 @@ class Blockchain {
 
 console.log("Creating the blockchain with the genesis block...");
 const blockchain = new Blockchain();
-console.log("Mining block #1...");
-blockchain.addBlock("First block");
-console.log("Mining block #2...");
-blockchain.addBlock("Second block");
-console.log(JSON.stringify(blockchain, null, 2));
+
+setInterval(() => {
+  console.log(`Mined new block #${blockchain.latestBlock.index + 1}`);
+  blockchain.addBlock();
+  console.log(JSON.stringify(blockchain.latestBlock, null, 2));
+}, 3000);
