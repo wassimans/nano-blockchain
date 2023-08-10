@@ -2,11 +2,10 @@
   "name": "nano-blockchain",
   "version": "1.0.0",
   "description": "a naif blockchain implementation",
-  "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "tsc": "tsc",
-    "start": "node dist/index.js"
+    "start": "node dist/node/main.js"
   },
   "repository": {
     "type": "git",
