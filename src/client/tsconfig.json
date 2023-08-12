@@ -1,0 +1,8 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "module": "es2015",
+    "outDir": "../../public",
+    "inlineSources": true // Remove this line in production builds if revealing TS code to end users is problematic,
+  }
+}
