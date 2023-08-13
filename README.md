@@ -1,6 +1,6 @@
 # Nano Blockchain
 
-A naif Proof of Work blockchain implementation in Typescript.
+A naive Proof of Work blockchain implementation in Typescript.
 
 ## Usage
 

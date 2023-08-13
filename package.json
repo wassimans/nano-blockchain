@@ -1,7 +1,7 @@
 {
   "name": "nano-blockchain",
   "version": "1.0.0",
-  "description": "A naif Proof of Work Blockchain implementation in Typescript/NodeJs",
+  "description": "A naive Proof of Work Blockchain implementation in Typescript/NodeJs",
   "contributors": [
     "Wassim Mansouri"
   ],
