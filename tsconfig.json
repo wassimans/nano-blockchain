@@ -1,16 +1,8 @@
 {
   "compileOnSave": false,
   "compilerOptions": {
-    /* Language and Environment */
-    "target": "es2017" /* Set the JavaScript language version for emitted JavaScript and include compatible library declarations. */,
+    "target": "es2017",
     "sourceMap": true,
-
-    "esModuleInterop": true,
-    "forceConsistentCasingInFileNames": true,
-
-    /* Type Checking */
-    "strict": true,
-    "skipLibCheck": true,
     "plugins": [
       {
         "name": "typescript-lit-html-plugin"

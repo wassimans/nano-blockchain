@@ -37,7 +37,7 @@ export class WebsocketController {
     const message = JSON.parse(event.data) as Message;
 
     if (this.messagesAwaitingReply.has(message.correlationId)) {
-      this.messagesAwaitingReply.get(message.correlationId).resolve(message);
+      this.messagesAwaitingReply.get(message.correlationId)?.resolve(message);
       this.messagesAwaitingReply.delete(message.correlationId);
     } else {
       this.messagesCallback(message); // an unexpected message from the server
@@ -50,14 +50,14 @@ export class WebsocketController {
   ): Promise<Message> {
     return new Promise<Message>(async (resolve, reject) => {
       if (awaitForReply) {
-        this.messagesAwaitingReply.set(message.correlationId, {
-          resolve,
-          reject,
+        this.messagesAwaitingReply.set(message.correlationId as string, {
+          resolve: resolve as (value?: Message | PromiseLike<Message>) => void,
+          reject: reject as (reason?: any) => void,
         });
       }
       this.websocket.then(
         (ws) => ws.send(JSON.stringify(message)),
-        () => this.messagesAwaitingReply.delete(message.correlationId)
+        () => this.messagesAwaitingReply.delete(message.correlationId as string)
       );
     });
   }

@@ -1,20 +1,7 @@
-// import { Blockchain } from "../shared/bc";
-
-// console.log("Creating the blockchain with the genesis block...");
-// const blockchain = new Blockchain();
-
-// console.log(JSON.stringify(blockchain.genesis, null, 2));
-
-// setInterval(() => {
-//   console.log(`Mined new block #${blockchain.latestBlock.index + 1}`);
-//   blockchain.addBlock();
-//   console.log(JSON.stringify(blockchain.latestBlock, null, 2));
-// }, 30);
-
-import express from "express";
-import http from "http";
-import path from "path";
-import WebSocket from "ws";
+import * as express from "express";
+import * as http from "http";
+import * as path from "path";
+import * as WebSocket from "ws";
 import { BlockchainServer } from "./blockchain-server";
 
 const PORT = 3000;

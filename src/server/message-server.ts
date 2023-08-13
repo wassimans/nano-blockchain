@@ -1,5 +1,4 @@
-import WebSocket from "ws";
-
+import * as WebSocket from "ws";
 export abstract class MessageServer<T> {
   constructor(private readonly wsServer: WebSocket.Server) {
     this.wsServer.on("connection", this.subscribeToMessages);

@@ -1,4 +1,4 @@
-import WebSocket from "ws";
+import * as WebSocket from "ws";
 import { Message, MessageTypes, UUID } from "../shared/messages";
 import { MessageServer } from "./message-server";
 
@@ -61,13 +61,18 @@ export class BlockchainServer extends MessageServer<Message> {
       );
 
       if (this.everyoneReplied(sender, message)) {
-        const allReplies = this.sentMessagesAwaitingReply
-          .get(message.correlationId)
-          .values();
-        const longestChain = Array.from(allReplies).reduce(
-          this.selectTheLongestChain
+        const replies = this.sentMessagesAwaitingReply.get(
+          message.correlationId
         );
-        this.replyTo(requestor, longestChain);
+        if (replies) {
+          const allReplies = replies.values();
+          const longestChain = Array.from(allReplies).reduce(
+            this.selectTheLongestChain
+          );
+          if (requestor) {
+            this.replyTo(requestor, longestChain);
+          }
+        }
       }
     }
   }
@@ -89,15 +94,16 @@ export class BlockchainServer extends MessageServer<Message> {
   // NOTE: naive implementation that assumes no clients added or removed after the server requested the longest chain.
   // Otherwise the server may await a reply from a client that has never received the request.
   private everyoneReplied(sender: WebSocket, message: Message): boolean {
-    const repliedClients = this.sentMessagesAwaitingReply
-      .get(message.correlationId)
-      .set(sender, message);
+    const replies = this.sentMessagesAwaitingReply.get(message.correlationId);
+    if (replies) {
+      const repliedClients = replies.set(sender, message);
+      const awaitingForClients = Array.from(this.clients).filter(
+        (c) => !repliedClients.has(c)
+      );
 
-    const awaitingForClients = Array.from(this.clients).filter(
-      (c) => !repliedClients.has(c)
-    );
-
-    return awaitingForClients.length === 1; // 1 - the one who requested.
+      return awaitingForClients.length === 1; // 1 - the one who requested.
+    }
+    return false;
   }
 
   private selectTheLongestChain(
