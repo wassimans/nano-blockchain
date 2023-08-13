@@ -95,7 +95,7 @@ export class Application implements Renderable<void> {
       if (notifyOthers) {
         this.server.announceNewBlock(block);
       }
-    } catch (error) {
+    } catch (error: any) {
       console.log(error.message);
     }
 

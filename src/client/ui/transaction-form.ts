@@ -6,7 +6,11 @@ import { BlockchainNode, Transaction } from "../lib/blockchain-node.js";
 import { Callback, Renderable, UI } from "./common.js";
 
 export class TransactionForm implements Renderable<Readonly<BlockchainNode>> {
-  private transaction: Transaction;
+  private transaction: Transaction | any = {
+    sender: "",
+    recipient: "",
+    amount: 0,
+  };
 
   constructor(readonly requestRendering: Callback) {
     this.resetForm();
@@ -20,7 +24,7 @@ export class TransactionForm implements Renderable<Readonly<BlockchainNode>> {
       <h2>New transaction</h2>
       <form
         class="add-transaction-form"
-        @submit=${(event) => this.enqueueTransaction(event, node)}
+        @submit=${(event: any) => this.enqueueTransaction(event, node)}
       >
         ${UI.formField(
           "sender",
